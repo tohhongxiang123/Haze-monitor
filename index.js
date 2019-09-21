@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 const fetch = require('node-fetch');
 const moment = require('moment');
+require('dotenv').config();
 
 const PORT = process.env.PORT || 5000;
 
