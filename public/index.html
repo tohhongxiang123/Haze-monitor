@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Air Quality in Singapore</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href='styles.css' type='text/css' />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+     <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
+    
+</head>
+<body>
+    <div class="main-reading text-center info-card">
+            <h2>Current National PSI: <span class="current_national_psi_reading"></span></h2>
+    </div>
+    <div class="current_reading">
+        <div id="mapid"></div>
+        <div class="text-readings">
+            <div class="info-card north">
+                <p>North: <span class="current_north_psi_reading"></span></p>
+            </div>
+            <div class="info-card south">
+                <p>South: <span class="current_south_psi_reading"></span></p>
+            </div>
+            <div class="info-card east">
+                <p>East: <span class="current_east_psi_reading"></span></p>
+            </div>
+            <div class="info-card west">
+                <p>West: <span class="current_west_psi_reading"></span></p>
+            </div>
+            <div class="info-card central">
+                <p>Central: <span class="current_central_psi_reading"></span></p>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="charts regions">
+        <h2 class="text-center"> Readings by region </h2>
+        <nav>
+            <div class="nav nav-pills nav-fill" id="nav-tab-region" role="tablist">
+              <a class="nav-item nav-link active" id="nav-national-tab" data-toggle="tab" href="#nav-national" role="tab" aria-controls="nav-national" aria-selected="true">National</a>
+              <a class="nav-item nav-link" id="nav-north-tab" data-toggle="tab" href="#nav-north" role="tab" aria-controls="nav-north" aria-selected="false">North</a>
+              <a class="nav-item nav-link" id="nav-south-tab" data-toggle="tab" href="#nav-south" role="tab" aria-controls="nav-south" aria-selected="false">South</a>
+              <a class="nav-item nav-link" id="nav-east-tab" data-toggle="tab" href="#nav-east" role="tab" aria-controls="nav-east" aria-selected="false">East</a>
+              <a class="nav-item nav-link" id="nav-west-tab" data-toggle="tab" href="#nav-west" role="tab" aria-controls="nav-west" aria-selected="false">West</a>
+              <a class="nav-item nav-link" id="nav-central-tab" data-toggle="tab" href="#nav-central" role="tab" aria-controls="nav-central" aria-selected="false">Central</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="regional-tabContent">
+            <div class="tab-pane fade show active" id="nav-national" role="tabpanel" aria-labelledby="nav-national-tab">
+                <canvas id="national_readings" width="800" height="800"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-north" role="tabpanel" aria-labelledby="nav-north-tab">
+                <canvas id="north_readings" width="800" height="800"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-south" role="tabpanel" aria-labelledby="nav-south-tab">
+                <canvas id="south_readings" width="800" height="800"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-east" role="tabpanel" aria-labelledby="nav-east-tab">
+                <canvas id="east_readings" width="800" height="800"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-west" role="tabpanel" aria-labelledby="nav-west-tab">
+                <canvas id="west_readings" width="800" height="800"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-central" role="tabpanel" aria-labelledby="nav-central-tab">
+                <canvas id="central_readings" width="800" height="800"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="charts measurements">
+        <h2 class="text-center"> Readings by measurement </h2>
+        <nav>
+            <div class="nav nav-pills nav-justified" id="nav-tab-measurement" role="tablist">
+                <a class="nav-item nav-link active" id="nav-psi_twenty_four_hourly-tab" data-toggle="tab" href="#nav-psi_twenty_four_hourly" role="tab" aria-controls="nav-psi_twenty_four_hourly" aria-selected="true">PSI 24-Hourly</a>
+                <a class="nav-item nav-link" id="nav-co_eight_hour_max-tab" data-toggle="tab" href="#nav-co_eight_hour_max" role="tab" aria-controls="nav-co_eight_hour_max" aria-selected="false">CO 8 Hour Max</a>
+                <a class="nav-item nav-link" id="nav-co_sub_index-tab" data-toggle="tab" href="#nav-co_sub_index" role="tab" aria-controls="nav-co_sub_index" aria-selected="false">CO Sub Index</a>
+                <a class="nav-item nav-link" id="nav-no2_one_hour_max-tab" data-toggle="tab" href="#nav-no2_one_hour_max" role="tab" aria-controls="nav-no2_one_hour_max" aria-selected="false">NO2 1 Hour Max</a>
+                <a class="nav-item nav-link" id="nav-o3_eight_hour_max-tab" data-toggle="tab" href="#nav-o3_eight_hour_max" role="tab" aria-controls="nav-o3_eight_hour_max" aria-selected="false">O3 8 Hour Max</a>
+                <a class="nav-item nav-link" id="nav-o3_sub_index-tab" data-toggle="tab" href="#nav-o3_sub_index" role="tab" aria-controls="nav-o3_sub_index" aria-selected="false">O3 Sub Index</a>
+                <a class="nav-item nav-link" id="nav-pm10_sub_index-tab" data-toggle="tab" href="#nav-pm10_sub_index" role="tab" aria-controls="nav-pm10_sub_index" aria-selected="false">PM10 Sub Index</a>
+                <a class="nav-item nav-link" id="nav-pm10_twenty_four_hourly-tab" data-toggle="tab" href="#nav-pm10_twenty_four_hourly" role="tab" aria-controls="nav-pm10_twenty_four_hourly" aria-selected="false">PM10 24-Hourly</a>
+                <a class="nav-item nav-link" id="nav-pm25_sub_index-tab" data-toggle="tab" href="#nav-pm25_sub_index" role="tab" aria-controls="nav-pm25_sub_index" aria-selected="false">PM25 Sub Index</a>
+                <a class="nav-item nav-link" id="nav-pm25_twenty_four_hourly-tab" data-toggle="tab" href="#nav-pm25_twenty_four_hourly" role="tab" aria-controls="nav-pm25_twenty_four_hourly" aria-selected="false">PM25 24-Hourly</a>
+                <a class="nav-item nav-link" id="nav-so2_sub_index-tab" data-toggle="tab" href="#nav-so2_sub_index" role="tab" aria-controls="nav-so2_sub_index" aria-selected="false">SO2 Sub Index</a>
+                <a class="nav-item nav-link" id="nav-so2_twenty_four_hourly-tab" data-toggle="tab" href="#nav-so2_twenty_four_hourly" role="tab" aria-controls="nav-so2_twenty_four_hourly" aria-selected="false">SO2 24-Hourly</a>
+        </nav>
+        <div class="tab-content" id="measurement-tabContent">
+            <div class="tab-pane fade show active" id="nav-psi_twenty_four_hourly" role="tabpanel" aria-labelledby="nav-psi_twenty_four_hourly-tab">
+                <canvas id="psi_twenty_four_hourly_readings" width="800" height="400"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-co_eight_hour_max" role="tabpanel" aria-labelledby="nav-co_eight_hour_max-tab">
+                <canvas id="co_eight_hour_max_readings" width="800" height="400"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-co_sub_index" role="tabpanel" aria-labelledby="nav-co_sub_index-tab">
+                <canvas id="co_sub_index_readings" width="800" height="400"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-no2_one_hour_max" role="tabpanel" aria-labelledby="nav-no2_one_hour_max-tab">
+                <canvas id="no2_one_hour_max_readings" width="800" height="400"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-o3_eight_hour_max" role="tabpanel" aria-labelledby="nav-o3_eight_hour_max-tab">
+                <canvas id="o3_eight_hour_max_readings" width="800" height="400"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-o3_sub_index" role="tabpanel" aria-labelledby="nav-o3_sub_index-tab">
+                <canvas id="o3_sub_index_readings" width="800" height="400"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-pm10_sub_index" role="tabpanel" aria-labelledby="nav-pm10_sub_index-tab">
+                <canvas id="pm10_sub_index_readings" width="800" height="400"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-pm10_twenty_four_hourly" role="tabpanel" aria-labelledby="nav-pm10_twenty_four_hourly-tab">
+                <canvas id="pm10_twenty_four_hourly_readings" width="800" height="400"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-pm25_sub_index" role="tabpanel" aria-labelledby="nav-pm25_sub_index-tab">
+                <canvas id="pm25_sub_index_readings" width="800" height="400"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-pm25_twenty_four_hourly" role="tabpanel" aria-labelledby="nav-pm25_twenty_four_hourly-tab">
+                <canvas id="pm25_twenty_four_hourly_readings" width="800" height="400"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-so2_sub_index" role="tabpanel" aria-labelledby="nav-so2_sub_index-tab">
+                <canvas id="so2_sub_index_readings" width="800" height="400"></canvas>
+            </div>
+            <div class="tab-pane fade" id="nav-so2_twenty_four_hourly" role="tabpanel" aria-labelledby="nav-so2_twenty_four_hourly-tab">
+                <canvas id="so2_twenty_four_hourly_readings" width="800" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div class="readings">
+        <h2>Overall Readings of the day</h2>
+    </div>
+
+    <hr />
+    <footer>
+        <small class="text-muted">Data provided by <a href="https://data.gov.sg/dataset/psi">NEA</a> under the <a href="https://data.gov.sg/open-data-licence">Singapore Open Data Licence</a></small>
+    </footer>
+    <script src="script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
