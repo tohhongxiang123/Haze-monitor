@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const fetch = require('node-fetch');
+const tz = require('moment-timezone');
 const moment = require('moment');
 require('dotenv').config();
 
@@ -30,7 +31,9 @@ app.get('/psi', async (req, res) => {
 
 app.get('/psi/day', async (req, res) => {
     const api_url = 'https://api.data.gov.sg/v1/environment/psi';
-    const response = await fetch(api_url + `?date=${moment().format('YYYY-MM-DD')}`, {mode: 'cors', headers: {"Content-Type": "application/json"}});
+    const now = moment();
+    const date = now.tz('Asia/Singapore').format('YYYY-MM-DD');
+    const response = await fetch(api_url + `?date=${date}`, {mode: 'cors', headers: {"Content-Type": "application/json"}});
     console.log('FETCHED FROM,', response.url);
 
     const data = await response.json();
