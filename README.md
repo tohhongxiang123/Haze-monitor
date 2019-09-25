@@ -13,3 +13,5 @@ Data visualised using [ChartJS](https://www.chartjs.org/) and [Bootstrap](https:
 2. [SASS Crash Course - DesignCourse](https://www.youtube.com/watch?v=roywYSEPSvc)
 
 3. [Graphing with Chart.js - Working With Data & APIs in JavaScript - The Coding Train](https://www.youtube.com/watch?v=5-ptp9tRApM)
+
+4. [overflow:hidden working on desktop, but not on mobile](https://stackoverflow.com/questions/14270084/overflow-xhidden-doesnt-prevent-content-from-overflowing-in-mobile-browsers)

@@ -41,6 +41,9 @@ body {
 }
 
 .main-reading {
+    overflow-x: hidden;
+    width: 100vw;
+
     .main-reading-text {
         clip-path: polygon(0 0, 100% 0, 100% 72%, 0% 100%);
         padding-top: 20px;
@@ -80,6 +83,7 @@ body {
 }
 
 .current-readings {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -87,7 +91,8 @@ body {
     margin-top: -60px;
 
     .singapore-bg {
-        width: 400px;
+        width: 100vw;
+        overflow-x: hidden;
         height: 200px;
         position: absolute;
         z-index: -1;
@@ -99,6 +104,7 @@ body {
 
         @include desktop {
             z-index: 1;
+            width: 400px;
         }
     }
 
