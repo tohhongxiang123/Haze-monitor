@@ -6,6 +6,10 @@ fetchDataAndGraph();
             .then(data => {
                 // restructuring data for easier plotting
                 console.log('Raw data:', data);
+                // immediately throw error if failed to fetch
+                if (data.status === 'failed') {
+                    throw Error("Failed to fetch from API. Please try again later");
+                }
 
                 let timestamps = [];
                 let readings_by_region = {};
@@ -223,5 +227,10 @@ fetchDataAndGraph();
                 //     }
                 // })
                 
+            }).catch(e => {
+                console.log(e);
+                const errorDisplay = document.querySelector('.errorDisplay');
+                errorDisplay.innerText = e;
+                errorDisplay.style.display = 'block';
             });
         }

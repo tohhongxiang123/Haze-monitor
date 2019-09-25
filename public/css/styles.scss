@@ -208,11 +208,22 @@ body {
         }
     }
 
+    @include mobile-small {
+        margin: 10px auto;
+    }
+
     @include desktop {
         align-self: flex-end;
         width: 300px;
         margin-right: 60px;
     }
+}
+
+.errorDisplay {
+    background-color: $hazardous;
+    padding: 20px 10px;
+    border-radius: 0.2em;
+    display: none;
 }
 
 

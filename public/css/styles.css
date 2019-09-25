@@ -219,6 +219,12 @@ body {
   margin-bottom: 0;
 }
 
+@media (max-width: 520px) {
+  .category-info {
+    margin: 10px auto;
+  }
+}
+
 @media (min-width: 1300px) {
   .category-info {
     -ms-flex-item-align: end;
@@ -226,6 +232,13 @@ body {
     width: 300px;
     margin-right: 60px;
   }
+}
+
+.errorDisplay {
+  background-color: #DC3545;
+  padding: 20px 10px;
+  border-radius: 0.2em;
+  display: none;
 }
 
 .charts {

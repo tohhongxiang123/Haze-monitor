@@ -7,7 +7,7 @@ const moment = require('moment');
 require('dotenv').config();
 
 // i dislike closures but theyre so useful
-const fetchData = ((api_url='https://api.data.gov.sg/v1/environment/psi') => {
+const fetchData = ((api_url='https://api.data.gov.sg/v1/environment/psi/') => {
     const cache = {};
     return  {
         // everytime we fetch we should be caching
@@ -20,7 +20,7 @@ const fetchData = ((api_url='https://api.data.gov.sg/v1/environment/psi') => {
                 // make sure the api is healthy
                 if (data.api_info.status === 'healthy') {
                     // make sure that there are items within the data received
-                    if (data.items) {
+                    if (data.items.length > 0) {
                         // store the new data in the cache
                         console.log('we can store new items');
                         data.items.forEach(item => {
@@ -29,7 +29,30 @@ const fetchData = ((api_url='https://api.data.gov.sg/v1/environment/psi') => {
                         });
                         return cache;
                     } else {
-                        return cache;
+                        // check for empty object
+                        if (Object.entries(cache).length === 0 && cache.constructor === Object) {
+                            // usually occurs at midnight
+                            // if there is no cache and fetching from api brings up no items, fetch the previous day data and cache it
+                            const yesterday_date = moment(date).tz('Asia/Singapore').subtract(1, 'day').format('YYYY-MM-DD');
+
+                            const response = await fetch(api_url + `?date=${yesterday_date}`, {mode: 'cors', headers: {"Content-Type": "application/json"}});
+                            console.log('FETCHED FROM YESTERDAY,', response.url);
+                            data = await response.json();
+
+                            // make sure yesterday also has items
+                            if (data.items.length > 0 && data.api_info.status === 'healthy') {
+                                // store the new data in the cache
+                                console.log(data.items);
+                                console.log('we can store new items for yesterday');
+                                data.items.forEach(item => {
+                                    const item_timestamp_hour = moment(item.timestamp).hour();
+                                    cache[item_timestamp_hour] = item;
+                                });
+                                return cache;
+                            } else {
+                                throw Error("Failed to fetch data. Please try again");
+                            }
+                        }
                     }
                 } else {
                     throw Error("API not healthy right now. Please try again later");
@@ -107,7 +130,8 @@ app.get('/psi/day', async (req, res) => {
 
         return res.json({items});
     } catch(e) {
-        return res.status(400).json({status: "failed", error:e})
+        console.log(e);
+        return res.status(400).json({status: "failed"})
     }
 })
 
