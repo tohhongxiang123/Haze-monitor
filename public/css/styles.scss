@@ -1,0 +1,224 @@
+$healthy: #28A745;
+$moderate: #007BFF;
+$unhealthy: #FFC107;
+$very-unhealthy: #FD7E14;
+$hazardous: #DC3545;
+$font-color: #060606;
+$background-color: #3C3B3B;
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+@mixin mobile-small {
+    @media (max-width: 520px) { @content; }
+}
+
+@mixin desktop {
+    @media (min-width: 1300px) { @content; }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Montserrat", "Segoe UI Semibold", "Arial";
+    background-color: $background-color;
+    color: $font-color;
+}
+.weight-light {
+    font-weight: 300;
+}
+.weight-regular {
+    font-weight: 400;
+}
+.weight-semibold {
+    font-weight: 600;
+}
+
+.main-reading {
+    .main-reading-text {
+        clip-path: polygon(0 0, 100% 0, 100% 72%, 0% 100%);
+        padding-top: 20px;
+        padding-bottom: 60px;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-position: bottom;
+        z-index: -1;
+
+        * {
+            margin-bottom: 0;
+        }
+
+        h1 {
+            font-size: 64px;
+        }
+
+        @include desktop {
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+            width: 40vw;
+            padding-top: 15vw;
+
+            h1 {
+                font-size: 10rem;
+            }
+
+            .current_national_category {
+                font-size: 48px;
+            }
+        }
+    }
+
+    @include desktop {
+        display: flex;
+        height: 100vh;
+    }
+}
+
+.current-readings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 600px;
+
+    .singapore-bg {
+        width: 400px;
+        height: 200px;
+        position: absolute;
+        z-index: -1;
+        transform: scale(3) translate(20px, 20px);
+        background-image: url(../singapore.svg);
+        background-size: auto;
+        background-repeat: no-repeat;
+        background-position: center center;
+
+        @include desktop {
+            z-index: 1;
+        }
+    }
+
+    @include mobile-small {
+        background-size: auto 100%;
+        background-position: center center;
+    }
+}
+
+.text-readings {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr repeat(3, minmax(150px, auto)) 1fr;
+    grid-template-areas: 
+    '. . n . .'
+    '. w c e .'
+    '. . s . .';
+    grid-gap: 30px;
+
+    @include mobile-small {
+        grid-template-columns: 1fr minmax(100px, auto) 1fr;
+        grid-gap: 10px;
+        grid-template-areas: 
+        '. n .'
+        '. s .'
+        '. e .'
+        '. w .'
+        '. c .';
+    }
+
+    @include desktop {
+        z-index: 2;
+    }
+}
+
+.info-card {
+    border-radius: 0.5em;
+    border: 2px solid black;
+    padding: 10px 30px;
+    position: relative;
+
+    * {
+        margin-bottom: 0;
+    }
+}
+
+.info-card.north {
+    grid-area: n;
+}
+.info-card.south {
+    grid-area: s;
+}
+.info-card.east {
+    grid-area: e;
+}
+.info-card.west {
+    grid-area: w;
+}
+.info-card.central {
+    grid-area: c;
+}
+
+.info-card.healthy, .category-item.healthy, .main-reading-text.healthy {
+    background-color: #28A745;
+}
+.info-card.moderate, .category-item.moderate, .main-reading-text.moderate  {
+    background-color: #007BFF;
+}
+.info-card.unhealthy, .category-item.unhealthy, .main-reading-text.unhealthy {
+    background-color: #FFC107;
+}
+.info-card.ver-unhealthy, .category-item.very-unhealthy, .main-reading-text.very-unhealthy {
+    background-color: #FD7E14;
+}
+.info-card.hazardous, .category-item.hazardous, .main-reading-text.hazardous {
+    background-color: #DC3545;
+}
+
+.category-info {
+    max-width: 300px;
+    margin: 30px auto 50px auto;
+
+    .category-item {
+        border-radius: 0.2em;
+        min-height: 30px;
+        padding: 5px;
+        margin: 5px 0;
+    
+        p {
+            margin-bottom: 0;
+        }
+    }
+
+    @include desktop {
+        align-self: flex-end;
+        margin-right: 20px;
+    }
+}
+
+
+
+.charts {
+    padding: 20px;
+    margin-top: 50px;
+}
+
+.charts h2 {
+    color: #E0E0E0;
+}
+
+.tab-content {
+    margin-top: 20px;
+    padding: 0 20px;
+}
+
+.tab-pane {
+    height: 800px;
+}
+
+.readings {
+    display: none;
+}
+
+footer {
+    text-align: right;
+    padding: 10px 20px;
+}

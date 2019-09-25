@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Air Quality in Singapore</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href='styles.css' type='text/css' />
+    <link rel="stylesheet" href='css/styles.css' type='text/css' />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
@@ -18,30 +18,60 @@
     
 </head>
 <body>
-    <div class="main-reading text-center info-card">
-            <h2>Current National PSI: <span class="current_national_psi_reading"></span></h2>
-    </div>
-    <div class="current_reading">
-        <div id="mapid"></div>
-        <div class="text-readings">
-            <div class="info-card north">
-                <p>North: <span class="current_north_psi_reading"></span></p>
+    <div class="main-reading text-center">
+        <div class="main-reading-text">
+            <p class="weight-light">Current National PSI</p>
+            <h1 class="weight-semibold current_national_psi_reading"></h1>
+            <p class="weight-semibold current_national_category"></p>
+            <p class="weight-regular latest-updated-date"></p>
+        </div>
+
+        <div class="current-readings">
+            <!-- <div id="mapid"></div> -->
+            <div class="singapore-bg"></div>
+            <div class="text-readings">
+                <div class="info-card text-center north">
+                    <h4 class="weight-semibold current_north_psi_reading"></h4>
+                    <p class="current_north_category"></p>
+                </div>
+                <div class="info-card text-center south">
+                    <h4 class="weight-semibold current_south_psi_reading"></h4>
+                    <p class="current_south_category"></p>
+                </div>
+                <div class="info-card text-center central">
+                    <h4 class="weight-semibold current_central_psi_reading"></h4>
+                    <p class="current_central_category"></p>
+                </div>
+                <div class="info-card text-center west">
+                    <h4 class="weight-semibold current_west_psi_reading"></h4>
+                    <p class="current_west_category"></p>
+                </div>
+                <div class="info-card text-center east">
+                    <h4 class="weight-semibold current_east_psi_reading"></h4>
+                    <p class="current_east_category"></p>
+                </div>
             </div>
-            <div class="info-card south">
-                <p>South: <span class="current_south_psi_reading"></span></p>
+        </div>
+    
+        <div class="category-info text-center">
+            <div class="category-item healthy">
+                <p class="weight-semibold">Healthy 0-50</p>
             </div>
-            <div class="info-card east">
-                <p>East: <span class="current_east_psi_reading"></span></p>
+            <div class="category-item moderate">
+                <p class="weight-semibold">Moderate 51-100</p>
             </div>
-            <div class="info-card west">
-                <p>West: <span class="current_west_psi_reading"></span></p>
+            <div class="category-item unhealthy">
+                <p class="weight-semibold">Unhealthy 101-200</p>
             </div>
-            <div class="info-card central">
-                <p>Central: <span class="current_central_psi_reading"></span></p>
+            <div class="category-item very-unhealthy">
+                <p class="weight-semibold">Very Unhealthy 201-300</p>
+            </div>
+            <div class="category-item hazardous">
+                <p class="weight-semibold">Hazardous >300</p>
             </div>
         </div>
     </div>
-
+    
     
     <div class="charts regions">
         <h2 class="text-center"> Readings by region </h2>
