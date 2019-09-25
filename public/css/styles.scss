@@ -26,7 +26,10 @@ body {
     font-family: "Montserrat", "Segoe UI Semibold", "Arial";
     background-color: $background-color;
     color: $font-color;
+    overflow-x: hidden;
+    width: 100vw;
 }
+
 .weight-light {
     font-weight: 300;
 }
@@ -58,7 +61,7 @@ body {
         @include desktop {
             clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
             width: 40vw;
-            padding-top: 15vw;
+            padding-top: 200px;
 
             h1 {
                 font-size: 10rem;
@@ -81,6 +84,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 600px;
+    margin-top: -60px;
 
     .singapore-bg {
         width: 400px;
@@ -139,43 +143,53 @@ body {
     * {
         margin-bottom: 0;
     }
+
+    &.north {
+        grid-area: n;
+    }
+
+    &.south {
+        grid-area: s;
+    }
+
+    &.east {
+        grid-area: e;
+    }
+
+    &.west {
+        grid-area: w;
+    }
+
+    &.central {
+        grid-area: c;
+    }
 }
 
-.info-card.north {
-    grid-area: n;
-}
-.info-card.south {
-    grid-area: s;
-}
-.info-card.east {
-    grid-area: e;
-}
-.info-card.west {
-    grid-area: w;
-}
-.info-card.central {
-    grid-area: c;
-}
+.info-card, .category-item, .main-reading-text {
+    &.healthy {
+        background-color: $healthy;
+    }
 
-.info-card.healthy, .category-item.healthy, .main-reading-text.healthy {
-    background-color: #28A745;
-}
-.info-card.moderate, .category-item.moderate, .main-reading-text.moderate  {
-    background-color: #007BFF;
-}
-.info-card.unhealthy, .category-item.unhealthy, .main-reading-text.unhealthy {
-    background-color: #FFC107;
-}
-.info-card.ver-unhealthy, .category-item.very-unhealthy, .main-reading-text.very-unhealthy {
-    background-color: #FD7E14;
-}
-.info-card.hazardous, .category-item.hazardous, .main-reading-text.hazardous {
-    background-color: #DC3545;
+    &.moderate {
+        background-color: $moderate;
+    }
+
+    &.unhealthy {
+        background-color: $unhealthy;
+    }
+
+    &.very-unhealthy {
+        background-color: $very-unhealthy;
+    }
+
+    &.hazardous {
+        background-color: $hazardous;
+    }
 }
 
 .category-info {
     max-width: 300px;
-    margin: 30px auto 50px auto;
+    margin: -50px auto 50px auto;
 
     .category-item {
         border-radius: 0.2em;
@@ -190,7 +204,8 @@ body {
 
     @include desktop {
         align-self: flex-end;
-        margin-right: 20px;
+        width: 300px;
+        margin-right: 60px;
     }
 }
 
