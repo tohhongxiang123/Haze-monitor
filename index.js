@@ -22,22 +22,14 @@ const fetchData = ((api_url='https://api.data.gov.sg/v1/environment/psi') => {
                     // make sure that there are items within the data received
                     if (data.items) {
                         // store the new data in the cache
-                        cache[moment(data.items[data.items.length - 1].timestamp).hour()] = data;
-
-                        // delete any entries older than 4 hours
-                        for (const [key, value] of Object.entries(cache)) {
-                            if (parseInt(moment().hour()) - parseInt(key) > 4) {
-                                delete cache[key];
-                            }
-                        }
-                        return data
+                        console.log('we can store new items');
+                        data.items.forEach(item => {
+                            const item_timestamp_hour = moment(item.timestamp).hour();
+                            cache[item_timestamp_hour] = item;
+                        });
+                        return cache;
                     } else {
-                        // return the latest cache, which is usually the hour before
-                        const previousHour = (moment().hour() - 1)%23;
-                        if (previousHour < 0) {
-                            previousHour += 24;
-                        }
-                        return cache[previousHour];
+                        return cache;
                     }
                 } else {
                     throw Error("API not healthy right now. Please try again later");
@@ -46,15 +38,16 @@ const fetchData = ((api_url='https://api.data.gov.sg/v1/environment/psi') => {
                 throw Error("Failed to fetch data");
             }
         },
-        getCache: function(key) {
-            console.log(cache);
+        getLatestCache: function(key) {
+            console.log('getting latest data', key);
             if (typeof key !== 'string') {
                 key = key.toString();
             }
             return cache[key];
         },
-        deleteFromCache: function(date_to_delete) {
-            delete cache[date_to_delete];
+        getCache: function() {
+            console.log('getting entire cache');
+            return cache;
         }
     }
 })();
@@ -88,15 +81,31 @@ app.get('/psi/day', async (req, res) => {
 
     try {
         // check if the current hour's data is in cache
-        let current_hour_data = fetchData.getCache(current_hour);
+        let current_hour_data = fetchData.getLatestCache(current_hour);
 
-        if (!current_hour_data) {
+        if (!current_hour_data || moment(current_hour_data.timestamp).day() !== moment(date).day()) {
             // if not, fetch new data
             console.log('Fetch new data');
-            current_hour_data = await fetchData.fetchFrom(date);
+            await fetchData.fetchFrom(date);
+        } else {
+            console.log('current hour data exists', current_hour_data.timestamp);
         }
 
-        return res.json(current_hour_data);
+        const data = fetchData.getCache();
+        const items = [];
+        for (const [key, value] of Object.entries(data)) {
+            items.push(value);
+        }
+
+        items.sort((a, b) => {
+            // sort by ascending (earliest time - latest time)
+            const end = moment(b.timestamp);
+            const start = moment(a.timestamp);
+            const difference = start.diff(end);
+            return difference;
+        })
+
+        return res.json({items});
     } catch(e) {
         return res.status(400).json({status: "failed", error:e})
     }
