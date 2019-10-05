@@ -183,7 +183,7 @@ body {
   grid-area: c;
 }
 
-.info-card.healthy, .category-item.healthy, .main-reading-text.healthy {
+.info-card.good, .category-item.good, .main-reading-text.good {
   background-color: #28A745;
 }
 

@@ -1,4 +1,4 @@
-$healthy: #28A745;
+$good: #28A745;
 $moderate: #007BFF;
 $unhealthy: #FFC107;
 $very-unhealthy: #FD7E14;
@@ -172,8 +172,8 @@ body {
 }
 
 .info-card, .category-item, .main-reading-text {
-    &.healthy {
-        background-color: $healthy;
+    &.good {
+        background-color: $good;
     }
 
     &.moderate {
