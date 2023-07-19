@@ -5,7 +5,6 @@ fetchDataAndGraph();
             .then(res => res.json())
             .then(data => {
                 // restructuring data for easier plotting
-                console.log('Raw data:', data);
                 // immediately throw error if failed to fetch
                 if (data.status === 'failed') {
                     throw Error("Failed to fetch from API. Please try again later");
@@ -80,8 +79,6 @@ fetchDataAndGraph();
                         counter++;
                     }
                 }
-
-                console.log('Overall dataset: ', overall_dataset);
 
                 // displaying latest updated time
                 document.querySelector('.latest-updated-date').innerText = data.items[data.items.length - 1].timestamp.replace('+08:00', '').split('T').join(' ');
@@ -196,9 +193,6 @@ fetchDataAndGraph();
                     });
                 }
 
-                console.log('By region:', readings_by_region);
-                console.log('By measurement:', readings_by_measurement);
-
                 // // setting up map
                 // let {region_metadata} = data;
                 // // const mymap = L.map('mapid', {crs: L.CRS.Simple}).setView([1.35735, 103.82], 12);
@@ -228,7 +222,6 @@ fetchDataAndGraph();
                 // })
                 
             }).catch(e => {
-                console.log(e);
                 const errorDisplay = document.querySelector('.errorDisplay');
                 errorDisplay.innerText = e;
                 errorDisplay.style.display = 'block';
